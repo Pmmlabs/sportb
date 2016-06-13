@@ -30,10 +30,10 @@ if (isset($_GET['id'])) {
     <? } else if (isset($_GET['m3u'])) {
         header('Content-Type: application/vnd.apple.mpegurl');
         ?>
-        #EXTM3U
-        #EXT-X-VERSION:3
-        #EXT-X-STREAM-INF:BANDWIDTH=1,CODECS="avc1.66.31,mp4a.40.2",RESOLUTION=1280x720
-        <? echo str_replace('playlist.m3u8', 'chunklist.m3u8', $url);
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-STREAM-INF:BANDWIDTH=1,CODECS="avc1.66.31,mp4a.40.2",RESOLUTION=1280x720
+<? echo str_replace('playlist.m3u8', 'chunklist.m3u8', $url);
     }
 } else {
     ?>
