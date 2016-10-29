@@ -26,7 +26,7 @@ if (isset($_GET['id'])) {
     $url = $json['streams']['url'];
     if (isset($_GET['video'])) { ?>
         <h1><?=$json['streams']['id'] ?>:<?=$json['streams']['name'] ?></h1>
-        <video src="<?= $url ?>"></video> <br>
+        <video controls="true" src="<?= $url ?>"></video> <br>
     <? } else if (isset($_GET['m3u'])) {
         header('Content-Type: application/vnd.apple.mpegurl');
         ?>
@@ -42,9 +42,11 @@ if (isset($_GET['id'])) {
         $videos = json_decode(curl("http://news.sportbox.ru/api2/rubricvideo?term_id=7212&app_id=android%2F3&page_size=100"), true);
         foreach ($videos['nodes'] as $video) {
             $id = $video['video']['streams'][2]['id'];
+            $id_sd = $video['video']['streams'][1]['id'];
             ?>
-            <li><?=($video['media_state'] == 'live' ? '[LIVE] ' : '') ?><?= $video['title'] ?> <a
-                    href="?id=<?= $id ?>&video">Video</a> | <a href="?id=<?= $id ?>&m3u">M3U</a></li>
+            <li>
+                <?=($video['media_state'] == 'live' ? '[LIVE] ' : '') ?><?= $video['title'] ?>
+                <a href="?id=<?= $id ?>&video">HD Video</a> | <a href="?id=<?= $id ?>&m3u">HD M3U</a> | <a href="?id=<?= $id_sd ?>&video">SD Video</a> | <a href="?id=<?= $id_sd ?>&m3u">SD M3U</a> </li>
         <? } ?>
     </ol>
     <?
