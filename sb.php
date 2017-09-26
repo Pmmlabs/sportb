@@ -25,7 +25,7 @@ function curl($url)
 }
 
 if (isset($_GET['id'])) {
-    $json = json_decode(curl("http://news.sportbox.ru/api2/videostream?id=" . $_GET['id'] . "&app_id=android%2F3"), true);
+    $json = json_decode(curl("https://news.sportbox.ru/api2/videostream?id=" . $_GET['id'] . "&app_id=android%2F3"), true);
     $url = $json['streams']['url'];
     if (isset($_GET['video'])) { ?>
         <h1><?=$json['streams']['id'] ?>:HD</h1>
@@ -44,6 +44,9 @@ if (isset($_GET['id'])) {
             }
         }
         krsort($streams);
+        if (!isset($_GET['hd'])) {
+            array_shift($streams);
+        }
         $best_chunklist = array_shift($streams);
         print "#EXTM3U\n"
             . "#EXT-X-VERSION:3\n"
@@ -60,14 +63,14 @@ if (isset($_GET['id'])) {
     ?>
     <ol type="1">
         <?php
-        $videos = json_decode(curl("http://news.sportbox.ru/api2/rubricvideo?term_id=7212&app_id=android%2F3&page_size=100"), true);
+        $videos = json_decode(curl("https://news.sportbox.ru/api2/rubricvideo?term_id=7212&app_id=android%2F3&page_size=100"), true);
         foreach ($videos['nodes'] as $video) {
             $id = $video['video']['streams'][1]['id'];
             $id_auto = $video['video']['streams'][2]['id'];
             ?>
             <li>
                 <?=($video['media_state'] == 'live' ? '[LIVE] ' : '') ?><?= $video['title'] ?>
-                <a href="?id=<?= $id ?>&video">Video</a> | <a href="?id=<?= $id_auto ?>&m3u">M3U</a></li>
+                <a href="?id=<?= $id ?>&video">Video</a> | <a href="?id=<?= $id_auto ?>&m3u">M3U</a> | <a href="?id=<?= $id_auto ?>&m3u&hd">M3U HD</a></li>
         <?php } ?>
     </ol>
     <?php
